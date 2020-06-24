@@ -26,6 +26,8 @@ gem 'devise', '~> 4.7', '>= 4.7.2'
 gem 'paperclip', '~> 6.1'
 
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
+
+gem 'searchkick', '~> 4.4'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
