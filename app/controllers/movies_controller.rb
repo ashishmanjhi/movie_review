@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
+# Movie class controller
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index,:show]
+  before_action :set_movie, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   def search
-    if params[:search].present?
-      @movies = Movie.search(params[:search])
-      else
-        @movies=Movie.all
-      end
+    @movies = if params[:search].present?
+                Movie.search(params[:search])
+              else
+                Movie.all
+              end
   end
 
   def index
@@ -17,12 +20,12 @@ class MoviesController < ApplicationController
   # GET /movies/1
   # GET /movies/1.json
   def show
-    @review = Review.where(movie_id: @movie.id).order("created_at DESC")
-    if @review.blank?
-      @avg_review=0
-    else
-      @avg_review=@review.average(:rating).round(2)
-    end
+    @review = Review.where(movie_id: @movie.id).order('created_at DESC')
+    @avg_review = if @review.blank?
+                    0
+                  else
+                    @review.average(:rating).round(2)
+                  end
   end
 
   # GET /movies/new
@@ -31,14 +34,12 @@ class MoviesController < ApplicationController
   end
 
   # GET /movies/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /movies
   # POST /movies.json
   def create
     @movie = current_user.movies.build(movie_params)
-
     respond_to do |format|
       if @movie.save
         format.html { redirect_to @movie, notice: 'Movie was successfully created.' }
@@ -75,13 +76,14 @@ class MoviesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_movie
-      @movie = Movie.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def movie_params
-      params.require(:movie).permit(:title, :description, :movie_length, :director, :rating, :image)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_movie
+    @movie = Movie.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def movie_params
+    params.require(:movie).permit(:title, :description, :movie_length, :director, :rating, :image)
+  end
 end
