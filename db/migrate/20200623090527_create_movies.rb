@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Movie class migrate
 class CreateMovies < ActiveRecord::Migration[6.0]
   def change
     create_table :movies do |t|

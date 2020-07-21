@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Movie class model
 class Movie < ApplicationRecord
   searchkick
   belongs_to :user
